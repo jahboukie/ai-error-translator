@@ -1,0 +1,27 @@
+steps:
+  # Build the container image
+  - name: 'gcr.io/cloud-builders/docker'
+    args: ['build', '-t', 'gcr.io/ai-error-translator/ai-error-translator-backend:latest', './backend']
+  
+  # Push the container image to Container Registry
+  - name: 'gcr.io/cloud-builders/docker'
+    args: ['push', 'gcr.io/ai-error-translator/ai-error-translator-backend:latest']
+  
+  # Deploy container image to Cloud Run
+  - name: 'gcr.io/cloud-builders/gcloud'
+    args:
+    - 'run'
+    - 'deploy'
+    - 'ai-error-translator-backend'
+    - '--image'
+    - 'gcr.io/ai-error-translator/ai-error-translator-backend:latest'
+    - '--region'
+    - 'us-central1'
+    - '--platform'
+    - 'managed'
+    - '--allow-unauthenticated'
+    - '--set-env-vars'
+    - 'GEMINI_API_KEY="",CLAUDE_API_KEY="",API_SECRET_KEY="",GOOGLE_CLOUD_PROJECT_ID=ai-error-translator,API_DEBUG=false,RATE_LIMIT_REQUESTS=100,RATE_LIMIT_WINDOW=3600'
+
+images:
+  - 'gcr.io/ai-error-translator/ai-error-translator-backend:latest'

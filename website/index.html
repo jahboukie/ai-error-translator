@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Error Translator - Instant Error Solutions for Developers</title>
+    <meta name="description" content="Transform cryptic programming errors into clear solutions instantly. VS Code extension powered by AI for JavaScript, Python, and more.">
+    <link rel="stylesheet" href="styles.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-logo">
+                <span class="logo-icon">🤖</span>
+                <span class="logo-text">AI Error Translator</span>
+            </div>
+            <ul class="nav-menu">
+                <li><a href="#features">Features</a></li>
+                <li><a href="#demo">Demo</a></li>
+                <li><a href="#pricing">Pricing</a></li>
+                <li><a href="#docs">Docs</a></li>
+                <li><a href="https://github.com/jahboukie/ai-error-translator" class="btn-outline">GitHub</a></li>
+            </ul>
+            <div class="hamburger">
+                <span class="bar"></span>
+                <span class="bar"></span>
+                <span class="bar"></span>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="container">
+            <div class="hero-content">
+                <h1 class="hero-title">
+                    Turn Cryptic Errors Into 
+                    <span class="gradient-text">Clear Solutions</span>
+                </h1>
+                <p class="hero-subtitle">
+                    AI-powered VS Code extension that instantly translates programming errors 
+                    into human-readable explanations with actionable fixes. Perfect for vibe coders and rapid prototypers.
+                </p>
+                <div class="hero-buttons">
+                    <a href="#install" class="btn-primary">
+                        <span>Install Extension</span>
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M7 17L17 7M17 7H7M17 7V17"/>
+                        </svg>
+                    </a>
+                    <a href="#demo" class="btn-secondary">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <polygon points="5,3 19,12 5,21"/>
+                        </svg>
+                        Watch Demo
+                    </a>
+                </div>
+            </div>
+            <div class="hero-visual">
+                <div class="demo-window">
+                    <div class="window-header">
+                        <div class="window-controls">
+                            <span class="control red"></span>
+                            <span class="control yellow"></span>
+                            <span class="control green"></span>
+                        </div>
+                        <span class="window-title">VS Code - Error Translation</span>
+                    </div>
+                    <div class="window-content">
+                        <div class="error-code">
+                            <span class="line-number">23</span>
+                            <span class="error-text">TypeError: Cannot read property 'map' of undefined</span>
+                        </div>
+                        <div class="translation-arrow">↓ AI Analysis</div>
+                        <div class="solution-panel">
+                            <h4>Solution: Add Null Check</h4>
+                            <code>const result = data && data.map(item => item.name);</code>
+                            <div class="confidence">Confidence: 95%</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section id="features" class="features">
+        <div class="container">
+            <div class="section-header">
+                <h2>Why Developers Love AI Error Translator</h2>
+                <p>Stop wasting time deciphering cryptic error messages. Get instant, actionable solutions.</p>
+            </div>
+            <div class="features-grid">
+                <div class="feature-card">
+                    <div class="feature-icon">⚡</div>
+                    <h3>Instant Analysis</h3>
+                    <p>Get error explanations in seconds, not minutes. Perfect for maintaining your flow state while coding.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">🎯</div>
+                    <h3>Context-Aware</h3>
+                    <p>Analyzes your code structure, dependencies, and project context for accurate solutions.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">🔧</div>
+                    <h3>One-Click Fixes</h3>
+                    <p>Apply solutions directly to your code with confidence ratings and step-by-step instructions.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">🤖</div>
+                    <h3>Dual AI Models</h3>
+                    <p>Free tier uses Gemini AI, Pro tier leverages Claude 3.5 Sonnet for superior accuracy and insights.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">🌐</div>
+                    <h3>Multi-Language</h3>
+                    <p>Supports JavaScript, TypeScript, Python, Java, C#, and 8+ other programming languages.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">💡</div>
+                    <h3>Learning Mode</h3>
+                    <p>Get prevention tips and best practices to avoid similar errors in the future.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Demo Section -->
+    <section id="demo" class="demo">
+        <div class="container">
+            <div class="section-header">
+                <h2>See It In Action</h2>
+                <p>Watch how AI Error Translator transforms your debugging workflow</p>
+            </div>
+            <div class="demo-content">
+                <div class="demo-steps">
+                    <div class="step">
+                        <div class="step-number">1</div>
+                        <div class="step-content">
+                            <h3>Select Error Text</h3>
+                            <p>Highlight any error message in your VS Code editor or upload a screenshot</p>
+                        </div>
+                    </div>
+                    <div class="step">
+                        <div class="step-number">2</div>
+                        <div class="step-content">
+                            <h3>Press Ctrl+Shift+E</h3>
+                            <p>Or right-click and select "Translate Error" from the context menu</p>
+                        </div>
+                    </div>
+                    <div class="step">
+                        <div class="step-number">3</div>
+                        <div class="step-content">
+                            <h3>Get Instant Solutions</h3>
+                            <p>View explanations, code fixes, and prevention tips in a beautiful interface</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="demo-video">
+                    <div class="video-placeholder">
+                        <div class="play-button">
+                            <svg width="60" height="60" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <polygon points="5,3 19,12 5,21"/>
+                            </svg>
+                        </div>
+                        <p>Demo Video Coming Soon</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Pricing Section -->
+    <section id="pricing" class="pricing">
+        <div class="container">
+            <div class="section-header">
+                <h2>Simple, Developer-Friendly Pricing</h2>
+                <p>Start free, upgrade when you need more. No surprises, no vendor lock-in.</p>
+            </div>
+            <div class="pricing-grid">
+                <div class="pricing-card">
+                    <div class="plan-header">
+                        <h3>Free</h3>
+                        <div class="price">$0<span>/month</span></div>
+                    </div>
+                    <ul class="plan-features">
+                        <li>✅ 20 error translations/month</li>
+                        <li>✅ Gemini AI analysis</li>
+                        <li>✅ VS Code integration</li>
+                        <li>✅ Basic error solutions</li>
+                        <li>✅ Community support</li>
+                        <li>❌ Premium Claude AI</li>
+                    </ul>
+                    <a href="#install" class="plan-button btn-outline">Get Started</a>
+                </div>
+                <div class="pricing-card popular">
+                    <div class="plan-badge">Most Popular</div>
+                    <div class="plan-header">
+                        <h3>Pro</h3>
+                        <div class="price">$12<span>/month</span></div>
+                    </div>
+                    <ul class="plan-features">
+                        <li>✅ 250 translations/month</li>
+                        <li>✅ Claude 3.5 Sonnet AI</li>
+                        <li>✅ Advanced error analysis</li>
+                        <li>✅ Detailed fix instructions</li>
+                        <li>✅ Priority support</li>
+                        <li>✅ Best-in-class accuracy</li>
+                    </ul>
+                    <a href="#install" class="plan-button btn-primary">Start Pro Trial</a>
+                </div>
+                <div class="pricing-card">
+                    <div class="plan-header">
+                        <h3>Add-on</h3>
+                        <div class="price">$5<span>/50 credits</span></div>
+                    </div>
+                    <ul class="plan-features">
+                        <li>✅ 50 extra translations</li>
+                        <li>✅ One-time purchase</li>
+                        <li>✅ Uses your current AI tier</li>
+                        <li>✅ Never expires</li>
+                        <li>✅ Perfect for busy months</li>
+                        <li>✅ Stack multiple packs</li>
+                    </ul>
+                    <a href="#install" class="plan-button btn-outline">Buy Credits</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Installation Section -->
+    <section id="install" class="install">
+        <div class="container">
+            <div class="section-header">
+                <h2>Get Started in 30 Seconds</h2>
+                <p>Install the extension and start translating errors immediately</p>
+            </div>
+            <div class="install-steps">
+                <div class="install-option">
+                    <h3>🔗 Direct Install</h3>
+                    <p>Install directly from the VS Code marketplace</p>
+                    <a href="vscode:extension/ai-error-translator" class="btn-primary">Install Extension</a>
+                </div>
+                <div class="install-option">
+                    <h3>📦 Manual Install</h3>
+                    <p>Download and install the .vsix package</p>
+                    <div class="install-commands">
+                        <code>code --install-extension ai-error-translator.vsix</code>
+                    </div>
+                </div>
+                <div class="install-option">
+                    <h3>⚙️ Configuration</h3>
+                    <p>Get your API key and configure the extension</p>
+                    <a href="#docs" class="btn-outline">Setup Guide</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <div class="footer-logo">
+                        <span class="logo-icon">🤖</span>
+                        <span class="logo-text">AI Error Translator</span>
+                    </div>
+                    <p>Making programming errors human-readable, one translation at a time.</p>
+                    <div class="social-links">
+                        <a href="https://github.com/jahboukie/ai-error-translator" aria-label="GitHub">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                                <path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/>
+                            </svg>
+                        </a>
+                        <a href="https://twitter.com/ai_error_translator" aria-label="Twitter">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                                <path d="M23.953 4.57a10 10 0 01-2.825.775 4.958 4.958 0 002.163-2.723c-.951.555-2.005.959-3.127 1.184a4.92 4.92 0 00-8.384 4.482C7.69 8.095 4.067 6.13 1.64 3.162a4.822 4.822 0 00-.666 2.475c0 1.71.87 3.213 2.188 4.096a4.904 4.904 0 01-2.228-.616v.06a4.923 4.923 0 003.946 4.827 4.996 4.996 0 01-2.212.085 4.936 4.936 0 004.604 3.417 9.867 9.867 0 01-6.102 2.105c-.39 0-.779-.023-1.17-.067a13.995 13.995 0 007.557 2.209c9.053 0 13.998-7.496 13.998-13.985 0-.21 0-.42-.015-.63A9.935 9.935 0 0024 4.59z"/>
+                            </svg>
+                        </a>
+                    </div>
+                </div>
+                <div class="footer-section">
+                    <h4>Product</h4>
+                    <ul>
+                        <li><a href="#features">Features</a></li>
+                        <li><a href="#pricing">Pricing</a></li>
+                        <li><a href="#demo">Demo</a></li>
+                        <li><a href="#install">Install</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4>Resources</h4>
+                    <ul>
+                        <li><a href="#docs">Documentation</a></li>
+                        <li><a href="https://github.com/jahboukie/ai-error-translator">GitHub</a></li>
+                        <li><a href="#api">API Reference</a></li>
+                        <li><a href="#changelog">Changelog</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4>Support</h4>
+                    <ul>
+                        <li><a href="#help">Help Center</a></li>
+                        <li><a href="#contact">Contact Us</a></li>
+                        <li><a href="#status">Status</a></li>
+                        <li><a href="#community">Community</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2025 AI Error Translator. Built with ❤️ by <a href="https://github.com/jahboukie">jahboukie</a></p>
+                <p>🤖 <em>Generated with <a href="https://claude.ai/code">Claude Code</a></em></p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>

@@ -65,7 +65,35 @@ export class ErrorTranslator {
             return null;
         }
 
-        vscode.window.showInformationMessage('Error capture from terminal is not yet implemented. Please select the error text manually.');
-        return null;
+        // For now, let's simulate terminal capture by asking user to copy error
+        const result = await vscode.window.showInputBox({
+            prompt: 'Paste the error from your terminal',
+            placeHolder: 'e.g., TypeError: Cannot read property \'map\' of undefined',
+            ignoreFocusOut: true,
+            validateInput: (value) => {
+                if (!value || value.trim().length === 0) {
+                    return 'Please paste an error message';
+                }
+                // Check for common error patterns
+                const errorPatterns = [
+                    /error/i,
+                    /exception/i,
+                    /traceback/i,
+                    /failed/i,
+                    /cannot/i,
+                    /undefined/i,
+                    /null/i,
+                    /syntax/i
+                ];
+                
+                if (!errorPatterns.some(pattern => pattern.test(value))) {
+                    return 'This doesn\'t look like an error message. Please paste an actual error.';
+                }
+                
+                return null;
+            }
+        });
+
+        return result || null;
     }
 }
