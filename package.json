@@ -1,0 +1,129 @@
+{
+  "name": "ai-error-translator",
+  "displayName": "AI Error Translator",
+  "description": "Instantly translate and fix programming errors using AI",
+  "version": "0.0.1",
+  "publisher": "your-publisher-name",
+  "engines": {
+    "vscode": "^1.74.0"
+  },
+  "categories": [
+    "Other",
+    "Debuggers",
+    "Machine Learning"
+  ],
+  "keywords": [
+    "ai",
+    "error",
+    "debugging",
+    "fix",
+    "translator",
+    "productivity"
+  ],
+  "activationEvents": [],
+  "main": "./out/extension.js",
+  "contributes": {
+    "commands": [
+      {
+        "command": "ai-error-translator.translateError",
+        "title": "Translate Error",
+        "category": "AI Error Translator"
+      },
+      {
+        "command": "ai-error-translator.captureError",
+        "title": "Capture & Translate Error",
+        "category": "AI Error Translator"
+      },
+      {
+        "command": "ai-error-translator.openSettings",
+        "title": "Open Settings",
+        "category": "AI Error Translator"
+      }
+    ],
+    "keybindings": [
+      {
+        "command": "ai-error-translator.captureError",
+        "key": "ctrl+shift+e",
+        "mac": "cmd+shift+e",
+        "when": "editorTextFocus"
+      }
+    ],
+    "configuration": {
+      "title": "AI Error Translator",
+      "properties": {
+        "ai-error-translator.apiKey": {
+          "type": "string",
+          "default": "",
+          "description": "API key for AI services",
+          "order": 1
+        },
+        "ai-error-translator.apiEndpoint": {
+          "type": "string",
+          "default": "https://api.ai-error-translator.com",
+          "description": "Backend API endpoint",
+          "order": 2
+        },
+        "ai-error-translator.autoCapture": {
+          "type": "boolean",
+          "default": true,
+          "description": "Automatically capture errors from terminal",
+          "order": 3
+        },
+        "ai-error-translator.maxContextLines": {
+          "type": "number",
+          "default": 50,
+          "description": "Maximum lines of context to include",
+          "order": 4
+        },
+        "ai-error-translator.enableTelemetry": {
+          "type": "boolean",
+          "default": true,
+          "description": "Enable anonymous usage telemetry",
+          "order": 5
+        }
+      }
+    },
+    "menus": {
+      "editor/context": [
+        {
+          "command": "ai-error-translator.translateError",
+          "group": "ai-error-translator",
+          "when": "editorHasSelection"
+        }
+      ],
+      "commandPalette": [
+        {
+          "command": "ai-error-translator.translateError",
+          "when": "editorIsOpen"
+        },
+        {
+          "command": "ai-error-translator.captureError",
+          "when": "editorIsOpen"
+        }
+      ]
+    }
+  },
+  "scripts": {
+    "vscode:prepublish": "npm run compile",
+    "compile": "tsc -p ./",
+    "watch": "tsc -watch -p ./",
+    "pretest": "npm run compile && npm run lint",
+    "lint": "eslint src --ext ts",
+    "test": "node ./out/test/runTest.js",
+    "package": "vsce package"
+  },
+  "devDependencies": {
+    "@types/vscode": "^1.74.0",
+    "@types/node": "16.x",
+    "@typescript-eslint/eslint-plugin": "^5.45.0",
+    "@typescript-eslint/parser": "^5.45.0",
+    "eslint": "^8.28.0",
+    "typescript": "^4.9.4",
+    "@vscode/test-electron": "^2.2.0",
+    "vsce": "^2.15.0"
+  },
+  "dependencies": {
+    "axios": "^1.6.0",
+    "form-data": "^4.0.0"
+  }
+}
