@@ -16,15 +16,24 @@ from app.services.stripe_service import StripeService
 from app.middleware.rate_limiting import RateLimitMiddleware
 from app.middleware.jwt_authentication import JWTAuthenticationMiddleware, get_current_user
 from app.middleware.usage_logging import UsageLoggingMiddleware
+from app.middleware.compression import CompressionMiddleware
+from app.monitoring.middleware import MonitoringMiddleware, SecurityMonitoringMiddleware, HealthCheckMiddleware
+from app.monitoring.logging import setup_logging
+from app.monitoring.error_tracking import setup_error_tracking
+from app.monitoring.metrics import setup_metrics_endpoint
 from app.routes.auth import router as auth_router
 from app.routes.users import router as users_router
 from app.database.connection import db_manager
+from app.services.cache_service import cache_service
 from app.config import settings
 
 load_dotenv()
 
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
+
+# Setup structured logging early
+setup_logging()
 
 app = FastAPI(
     title="AI Error Translator API",
@@ -46,6 +55,14 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
+# Create middleware instances
+rate_limit_middleware = RateLimitMiddleware(app)
+compression_middleware = CompressionMiddleware(app)
+
+app.add_middleware(CompressionMiddleware)  # Should be first for best compression
+app.add_middleware(MonitoringMiddleware)
+app.add_middleware(SecurityMonitoringMiddleware)
+app.add_middleware(HealthCheckMiddleware)
 app.add_middleware(UsageLoggingMiddleware)
 app.add_middleware(RateLimitMiddleware)
 app.add_middleware(JWTAuthenticationMiddleware)
@@ -68,7 +85,8 @@ async def health_check():
         "services": {
             "database": await db_manager.health_check(),
             "vision": await vision_service.health_check(),
-            "ai_services": ai_service.get_service_status()
+            "ai_services": ai_service.get_service_status(),
+            "cache": await cache_service.health_check()
         }
     }
 
@@ -76,11 +94,25 @@ async def health_check():
 async def startup_event():
     """Initialize database and services on startup"""
     try:
+        # Setup monitoring
+        setup_logging()
+        setup_error_tracking()
+        
         # Create database tables if they don't exist
         await db_manager.create_tables()
         logger.info("Database initialized successfully")
+        
+        # Connect to Redis cache
+        await cache_service.connect()
+        logger.info("Cache service initialized")
+        
+        # Setup metrics endpoint
+        metrics_app = setup_metrics_endpoint()
+        app.mount("/metrics", metrics_app)
+        
+        logger.info("Application startup complete")
     except Exception as e:
-        logger.error(f"Database initialization failed: {str(e)}")
+        logger.error(f"Application startup failed: {str(e)}")
         # Don't fail startup, just log the error
 
 @app.on_event("shutdown")
@@ -89,6 +121,9 @@ async def shutdown_event():
     try:
         await db_manager.close()
         logger.info("Database connections closed")
+        
+        await cache_service.disconnect()
+        logger.info("Cache service disconnected")
     except Exception as e:
         logger.error(f"Error during shutdown: {str(e)}")
 
@@ -105,8 +140,29 @@ async def translate_error(
         
         # Get user tier from JWT token
         user_tier = SubscriptionTier.PRO if current_user["tier"] == "pro" else SubscriptionTier.FREE
+        user_tier_str = "pro" if user_tier == SubscriptionTier.PRO else "free"
         
+        # Check cache first
+        cached_result = await cache_service.get_cached_translation(
+            error_text=request.errorText,
+            language=request.language,
+            user_tier=user_tier_str
+        )
+        
+        if cached_result:
+            logger.info(f"Returning cached translation for user {current_user['user_id']}")
+            return cached_result
+        
+        # If not in cache, process the request
         result = await error_analyzer.analyze_error(request, user_tier)
+        
+        # Cache the result
+        await cache_service.cache_translation(
+            error_text=request.errorText,
+            language=request.language,
+            user_tier=user_tier_str,
+            translation_result=result.dict()
+        )
         
         logger.info(f"Successfully analyzed error for user {current_user['user_id']}, confidence: {result.confidence}")
         return result
@@ -123,7 +179,13 @@ async def get_supported_languages():
     """
     Get list of supported programming languages
     """
-    return {
+    # Check cache first
+    cached_languages = await cache_service.get_cached_api_response("supported-languages", {})
+    if cached_languages:
+        return cached_languages
+    
+    # Generate response
+    response = {
         "languages": [
             "javascript",
             "typescript",
@@ -140,6 +202,11 @@ async def get_supported_languages():
             "kotlin"
         ]
     }
+    
+    # Cache for 1 hour
+    await cache_service.cache_api_response("supported-languages", {}, response)
+    
+    return response
 
 # Claude API test endpoint removed - using Gemini only
 
@@ -241,7 +308,13 @@ async def stripe_webhook(request: Request):
 @app.get("/pricing")
 async def get_pricing():
     """Get pricing information"""
-    return {
+    # Check cache first
+    cached_pricing = await cache_service.get_cached_api_response("pricing", {})
+    if cached_pricing:
+        return cached_pricing
+    
+    # Generate response
+    response = {
         "plans": [
             {
                 "name": "Free",
@@ -265,6 +338,31 @@ async def get_pricing():
             }
         ]
     }
+    
+    # Cache for 30 minutes
+    await cache_service.cache_api_response("pricing", {}, response)
+    
+    return response
+
+@app.get("/cache/stats")
+async def get_cache_stats():
+    """Get cache statistics"""
+    return await cache_service.get_cache_stats()
+
+@app.get("/database/stats")
+async def get_database_stats():
+    """Get database connection pool statistics"""
+    return await db_manager.get_pool_stats()
+
+@app.get("/rate-limit/stats")
+async def get_rate_limit_stats():
+    """Get rate limiting statistics"""
+    return await rate_limit_middleware.get_rate_limit_stats()
+
+@app.get("/compression/stats")
+async def get_compression_stats():
+    """Get compression middleware statistics"""
+    return compression_middleware.get_compression_stats()
 
 @app.exception_handler(HTTPException)
 async def http_exception_handler(request, exc):

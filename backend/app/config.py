@@ -53,6 +53,15 @@ class Settings(BaseSettings):
     # Logging Configuration
     LOG_LEVEL: str = os.getenv("LOG_LEVEL", "INFO")
     
+    # Monitoring Configuration
+    SENTRY_DSN: str = os.getenv("SENTRY_DSN", "")
+    ENABLE_METRICS: bool = os.getenv("ENABLE_METRICS", "true").lower() == "true"
+    METRICS_PORT: int = int(os.getenv("METRICS_PORT", "8001"))
+    
+    # Error Tracking
+    ENABLE_ERROR_TRACKING: bool = os.getenv("ENABLE_ERROR_TRACKING", "true").lower() == "true"
+    ERROR_SAMPLE_RATE: float = float(os.getenv("ERROR_SAMPLE_RATE", "1.0"))
+    
     class Config:
         env_file = ".env"
         case_sensitive = True

@@ -25,3 +25,7 @@ sqlalchemy==2.0.23
 asyncpg==0.29.0
 alembic==1.12.1
 psycopg2-binary==2.9.9
+structlog==23.2.0
+prometheus-client==0.19.0
+sentry-sdk[fastapi]==1.40.0
+brotli==1.1.0
