@@ -131,8 +131,8 @@ async def create_checkout_session(
         if not price_id or not customer_email:
             raise HTTPException(status_code=400, detail="price_id and customer_email are required")
         
-        success_url = f"https://errortranslator.com/success?session_id={{CHECKOUT_SESSION_ID}}"
-        cancel_url = "https://errortranslator.com/cancel"
+        success_url = f"{settings.FRONTEND_URL}/success?session_id={{CHECKOUT_SESSION_ID}}"
+        cancel_url = f"{settings.FRONTEND_URL}/cancel"
         
         session = stripe_service.create_checkout_session(
             price_id=price_id,
@@ -160,7 +160,7 @@ async def create_portal_session(
         if not customer_id:
             raise HTTPException(status_code=400, detail="customer_id is required")
         
-        return_url = "https://errortranslator.com/account"
+        return_url = f"{settings.FRONTEND_URL}/account"
         
         session = stripe_service.create_portal_session(
             customer_id=customer_id,

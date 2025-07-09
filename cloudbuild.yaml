@@ -21,7 +21,9 @@ steps:
     - 'managed'
     - '--allow-unauthenticated'
     - '--set-env-vars'
-    - 'GEMINI_API_KEY="",CLAUDE_API_KEY="",API_SECRET_KEY="",GOOGLE_CLOUD_PROJECT_ID=ai-error-translator,API_DEBUG=false,RATE_LIMIT_REQUESTS=100,RATE_LIMIT_WINDOW=3600'
+    - 'GOOGLE_CLOUD_PROJECT_ID=ai-error-translator,API_DEBUG=false,RATE_LIMIT_REQUESTS=100,RATE_LIMIT_WINDOW=3600,ALLOWED_ORIGINS=https://errortranslator.com'
+    - '--set-secrets'
+    - 'GEMINI_API_KEY=gemini-api-key:latest,JWT_SECRET_KEY=jwt-secret-key:latest,API_SECRET_KEY=api-secret-key:latest,STRIPE_SECRET_KEY=stripe-secret-key:latest,STRIPE_WEBHOOK_SECRET=stripe-webhook-secret:latest'
 
 images:
   - 'gcr.io/ai-error-translator/ai-error-translator-backend:latest'

@@ -52,8 +52,8 @@
       "properties": {
         "ai-error-translator.apiKey": {
           "type": "string",
-          "default": "test-token-123456789012345678901234567890",
-          "description": "API key for AI services",
+          "default": "",
+          "description": "API key for AI services (get one from errortranslator.com)",
           "order": 1
         },
         "ai-error-translator.apiEndpoint": {

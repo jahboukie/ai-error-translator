@@ -23,8 +23,8 @@ class Settings(BaseSettings):
     PRO_TIER_MODEL: str = "gemini-1.5-flash"
     
     # API Configuration
-    API_SECRET_KEY: str = os.getenv("API_SECRET_KEY", "default-secret-key-change-in-production")
-    JWT_SECRET_KEY: str = os.getenv("JWT_SECRET_KEY", "jwt-secret-key-change-in-production-must-be-long-and-secure")
+    API_SECRET_KEY: str = os.getenv("API_SECRET_KEY", "INSECURE_DEFAULT_CHANGE_IN_PRODUCTION")
+    JWT_SECRET_KEY: str = os.getenv("JWT_SECRET_KEY", "INSECURE_JWT_DEFAULT_CHANGE_IN_PRODUCTION")
     API_HOST: str = os.getenv("API_HOST", "0.0.0.0")
     API_PORT: int = 8000
     API_DEBUG: bool = os.getenv("API_DEBUG", "false").lower() == "true"
@@ -37,10 +37,13 @@ class Settings(BaseSettings):
     RATE_LIMIT_WINDOW: int = 3600
     
     # CORS Configuration  
-    ALLOWED_ORIGINS: List[str] = ["*"]
+    ALLOWED_ORIGINS: List[str] = os.getenv("ALLOWED_ORIGINS", "http://localhost:3000,http://localhost:5173").split(",")
     
     # AI Configuration
     MAX_CONTEXT_LENGTH: int = 4000
+    
+    # Frontend Configuration
+    FRONTEND_URL: str = os.getenv("FRONTEND_URL", "https://errortranslator.com")
     
     # Logging Configuration
     LOG_LEVEL: str = os.getenv("LOG_LEVEL", "INFO")

@@ -7,5 +7,29 @@ node_modules
 *.log
 .DS_Store
 Thumbs.db
+
+# Backend secrets and credentials
 backend/credentials.json
 backend/.env
+backend/.env.local
+backend/.env.production
+backend/.env.development
+backend/service-account-key.json
+backend/*.pem
+backend/*.key
+backend/*.crt
+backend/venv/
+backend/__pycache__/
+backend/**/__pycache__/
+backend/test_results/
+backend/logs/
+
+# Firebase
+.firebase/
+firebase-debug.log
+firebase-debug.*.log
+
+# Temporary files
+*.tmp
+*.temp
+get-pip.py
