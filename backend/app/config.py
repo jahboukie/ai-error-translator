@@ -30,6 +30,11 @@ class Settings(BaseSettings):
     API_DEBUG: bool = os.getenv("API_DEBUG", "false").lower() == "true"
     
     # Database Configuration
+    DATABASE_URL: str = os.getenv("DATABASE_URL", "postgresql://localhost/ai_error_translator")
+    DATABASE_POOL_SIZE: int = int(os.getenv("DATABASE_POOL_SIZE", "10"))
+    DATABASE_MAX_OVERFLOW: int = int(os.getenv("DATABASE_MAX_OVERFLOW", "20"))
+    
+    # Redis Configuration
     REDIS_URL: str = os.getenv("REDIS_URL", "redis://localhost:6379")
     
     # Rate Limiting

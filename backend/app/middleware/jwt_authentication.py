@@ -6,6 +6,8 @@ from starlette.middleware.base import BaseHTTPMiddleware
 from starlette.responses import Response, JSONResponse
 
 from app.services.auth_service import AuthService
+from app.services.user_service import UserService
+from app.database.connection import get_db_session
 from app.config import settings
 
 logger = logging.getLogger(__name__)
@@ -63,23 +65,27 @@ class JWTAuthenticationMiddleware(BaseHTTPMiddleware):
             
             token = auth_header[7:]  # Remove "Bearer " prefix
             
-            # Validate the JWT token
-            user_data = self.auth_service.validate_api_key(token)
-            
-            if not user_data:
-                return self._create_error_response(
-                    401, 
-                    "Invalid or expired token", 
-                    "INVALID_TOKEN"
-                )
-            
-            # Add user info to request state for use in endpoints
-            request.state.user_id = user_data["user_id"]
-            request.state.user_tier = user_data["tier"]
-            request.state.api_key = user_data["api_key"]
-            request.state.token_created_at = user_data["created_at"]
-            
-            logger.info(f"Authenticated user {user_data['user_id']} with tier {user_data['tier']}")
+            # Validate the JWT token using database-backed service
+            async with get_db_session() as session:
+                user_service = UserService(session)
+                user_data = await user_service.validate_api_key(token)
+                
+                if not user_data:
+                    return self._create_error_response(
+                        401, 
+                        "Invalid or expired token", 
+                        "INVALID_TOKEN"
+                    )
+                
+                # Add user info to request state for use in endpoints
+                request.state.user_id = user_data["user_id"]
+                request.state.user_email = user_data["email"]
+                request.state.user_tier = user_data["tier"]
+                request.state.api_key_id = user_data["api_key_id"]
+                request.state.api_key_name = user_data["api_key_name"]
+                request.state.token_created_at = user_data["created_at"]
+                
+                logger.info(f"Authenticated user {user_data['user_id']} ({user_data['email']}) with tier {user_data['tier']}")
             
         except Exception as e:
             logger.error(f"Authentication error: {str(e)}")
@@ -116,8 +122,10 @@ def get_current_user(request: Request) -> Dict[str, Any]:
     
     return {
         "user_id": request.state.user_id,
+        "email": request.state.user_email,
         "tier": request.state.user_tier,
-        "api_key": request.state.api_key,
+        "api_key_id": request.state.api_key_id,
+        "api_key_name": request.state.api_key_name,
         "created_at": request.state.token_created_at
     }
 

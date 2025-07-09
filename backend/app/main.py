@@ -15,7 +15,10 @@ from app.services.error_analyzer import ErrorAnalyzer
 from app.services.stripe_service import StripeService
 from app.middleware.rate_limiting import RateLimitMiddleware
 from app.middleware.jwt_authentication import JWTAuthenticationMiddleware, get_current_user
+from app.middleware.usage_logging import UsageLoggingMiddleware
 from app.routes.auth import router as auth_router
+from app.routes.users import router as users_router
+from app.database.connection import db_manager
 from app.config import settings
 
 load_dotenv()
@@ -33,6 +36,7 @@ app = FastAPI(
 
 # Include authentication routes
 app.include_router(auth_router)
+app.include_router(users_router)
 
 app.add_middleware(
     CORSMiddleware,
@@ -42,6 +46,7 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
+app.add_middleware(UsageLoggingMiddleware)
 app.add_middleware(RateLimitMiddleware)
 app.add_middleware(JWTAuthenticationMiddleware)
 
@@ -61,10 +66,31 @@ async def health_check():
     return {
         "status": "healthy",
         "services": {
+            "database": await db_manager.health_check(),
             "vision": await vision_service.health_check(),
             "ai_services": ai_service.get_service_status()
         }
     }
+
+@app.on_event("startup")
+async def startup_event():
+    """Initialize database and services on startup"""
+    try:
+        # Create database tables if they don't exist
+        await db_manager.create_tables()
+        logger.info("Database initialized successfully")
+    except Exception as e:
+        logger.error(f"Database initialization failed: {str(e)}")
+        # Don't fail startup, just log the error
+
+@app.on_event("shutdown")
+async def shutdown_event():
+    """Clean up resources on shutdown"""
+    try:
+        await db_manager.close()
+        logger.info("Database connections closed")
+    except Exception as e:
+        logger.error(f"Error during shutdown: {str(e)}")
 
 @app.post("/translate", response_model=TranslationResponse)
 async def translate_error(
