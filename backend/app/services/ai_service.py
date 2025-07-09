@@ -17,17 +17,13 @@ class AIService:
         
     def get_primary_service(self, tier: SubscriptionTier):
         """Get the primary AI service based on subscription tier"""
-        if tier == SubscriptionTier.PRO:
-            return self.claude_service
-        else:  # FREE tier
-            return self.gemini_service
+        # Use Gemini for both free and pro tiers (Claude has connection issues)
+        return self.gemini_service
     
     def get_fallback_service(self, tier: SubscriptionTier):
         """Get the fallback AI service"""
-        if tier == SubscriptionTier.PRO:
-            return self.gemini_service  # Fallback to Gemini if Claude fails
-        else:  # FREE tier
-            return self.claude_service  # Fallback to Claude if Gemini fails
+        # Use Gemini for both primary and fallback (Claude has connection issues)
+        return self.gemini_service
     
     async def analyze_error(self, 
                           error_text: str, 
@@ -45,8 +41,8 @@ class AIService:
         try:
             if primary_service.is_available():
                 logger.info(f"Using primary service for {user_tier.value} tier")
-                result = await primary_service.analyze_error(error_text, context)
-                result["service_used"] = "claude" if user_tier == SubscriptionTier.PRO else "gemini"
+                result = primary_service.analyze_error(error_text, context)
+                result["service_used"] = "gemini"
                 return result
             else:
                 logger.warning(f"Primary service not available for {user_tier.value} tier")
@@ -58,8 +54,8 @@ class AIService:
         try:
             if fallback_service.is_available():
                 logger.info(f"Using fallback service for {user_tier.value} tier")
-                result = await fallback_service.analyze_error(error_text, context)
-                result["service_used"] = "gemini" if user_tier == SubscriptionTier.PRO else "claude"
+                result = fallback_service.analyze_error(error_text, context)
+                result["service_used"] = "gemini"
                 result["fallback_used"] = True
                 return result
             else:

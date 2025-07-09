@@ -5,7 +5,7 @@ pydantic==2.5.0
 pydantic-settings==2.1.0
 google-cloud-vision==3.4.5
 google-generativeai==0.3.2
-anthropic==0.8.1
+anthropic==0.40.0
 pillow==10.1.0
 python-dotenv==1.0.0
 requests==2.31.0
@@ -15,3 +15,5 @@ redis==5.0.1
 slowapi==0.1.9
 python-jose[cryptography]==3.3.0
 bcrypt==4.1.2
+passlib[bcrypt]==1.7.4
+stripe==8.0.0

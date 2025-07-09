@@ -33,7 +33,7 @@ class GeminiService:
         """Check if Gemini service is available"""
         return self.model is not None
     
-    async def analyze_error(self, error_text: str, context: ErrorContext) -> Dict[str, Any]:
+    def analyze_error(self, error_text: str, context: ErrorContext) -> Dict[str, Any]:
         """
         Analyze programming error using Gemini AI
         
@@ -57,7 +57,7 @@ class GeminiService:
                 "temperature": 0.1,
                 "top_p": 0.8,
                 "top_k": 40,
-                "max_output_tokens": 1000,
+                "max_output_tokens": 2000,
             }
             
             response = self.model.generate_content(
@@ -203,7 +203,32 @@ Respond ONLY with valid JSON. Do not include any text before or after the JSON.
             
         except json.JSONDecodeError as e:
             logger.error(f"Failed to parse Gemini response as JSON: {str(e)}")
-            logger.error(f"Response text: {response_text[:500]}...")
+            logger.error(f"Full response text: {response_text}")
+            
+            # Try to extract partial JSON if the response was truncated
+            try:
+                # Find the start and end of JSON
+                start_idx = response_text.find('{')
+                if start_idx != -1:
+                    # Try to find matching closing brace
+                    brace_count = 0
+                    end_idx = -1
+                    for i, char in enumerate(response_text[start_idx:], start_idx):
+                        if char == '{':
+                            brace_count += 1
+                        elif char == '}':
+                            brace_count -= 1
+                            if brace_count == 0:
+                                end_idx = i + 1
+                                break
+                    
+                    if end_idx != -1:
+                        partial_json = response_text[start_idx:end_idx]
+                        logger.info(f"Attempting to parse partial JSON: {partial_json}")
+                        return json.loads(partial_json)
+            except:
+                pass
+            
             return self._create_fallback_response(response_text)
         except Exception as e:
             logger.error(f"Error parsing Gemini response: {str(e)}")

@@ -4,37 +4,37 @@ A VS Code extension that instantly translates and fixes programming errors using
 
 ## Features
 
-- **Instant Error Translation**: Upload screenshots or select error text to get AI-powered explanations and solutions
+- **Instant Error Translation**: Select error text to get AI-powered explanations and solutions
 - **Smart Context Gathering**: Automatically includes relevant code context, file structure, and dependencies
 - **One-Click Solutions**: Apply fixes directly to your code with a single click
-- **Terminal Monitoring**: Automatically detects errors in terminal output (coming soon)
+- **Terminal Error Analysis**: Paste terminal errors for detailed analysis
 - **Multi-Language Support**: Works with JavaScript, TypeScript, Python, Java, C#, and more
 
 ## Installation
 
 1. Install the extension from the VS Code marketplace
-2. Configure your API key in settings (`Ctrl+,` → search "ai-error-translator")
-3. Start translating errors with `Ctrl+Shift+E`
+2. Subscribe to a plan at [errortranslator.com](https://errortranslator.com) to get your API key
+3. Configure your API key in settings (`Ctrl+,` → search "ai-error-translator")
+4. Start translating errors with `Ctrl+Alt+E`
 
 ## Usage
 
 ### Translate Selected Error Text
 1. Select the error text in your editor
-2. Right-click and choose "Translate Error" or press `Ctrl+Shift+E`
+2. Right-click and choose "Translate Error" or press `Ctrl+Alt+E`
 3. View the AI-generated explanation and solutions
 
 ### Capture and Translate Errors
-1. Press `Ctrl+Shift+E` without selecting text
-2. The extension will attempt to capture the last error from your terminal
+1. Press `Ctrl+Alt+E` without selecting text
+2. Paste the error text when prompted
 3. Get instant solutions with confidence ratings
 
 ## Configuration
 
 | Setting | Description | Default |
 |---------|-------------|---------|
-| `ai-error-translator.apiKey` | Your API key for AI services | (empty) |
-| `ai-error-translator.apiEndpoint` | Backend API endpoint | https://api.ai-error-translator.com |
-| `ai-error-translator.autoCapture` | Automatically capture terminal errors | true |
+| `ai-error-translator.apiKey` | Your API key from subscription | (empty) |
+| `ai-error-translator.apiEndpoint` | Backend API endpoint | https://ai-error-translator-backend-196276076073.us-central1.run.app |
 | `ai-error-translator.maxContextLines` | Maximum lines of context to include | 50 |
 | `ai-error-translator.enableTelemetry` | Enable anonymous usage telemetry | true |
 
@@ -48,7 +48,7 @@ A VS Code extension that instantly translates and fixes programming errors using
 
 - VS Code 1.74.0 or higher
 - Active internet connection
-- Valid API key (get one at [ai-error-translator.com](https://ai-error-translator.com))
+- Valid subscription (get one at [errortranslator.com](https://errortranslator.com))
 
 ## Development
 
@@ -85,9 +85,9 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 ## Support
 
-- 📧 Email: support@ai-error-translator.com
+- 📧 Email: support@errortranslator.com
 - 🐛 Issues: [GitHub Issues](https://github.com/your-org/ai-error-translator/issues)
-- 💬 Discord: [Join our community](https://discord.gg/ai-error-translator)
+- 🌐 Website: [errortranslator.com](https://errortranslator.com)
 
 ## Changelog
 

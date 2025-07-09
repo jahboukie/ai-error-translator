@@ -24,7 +24,9 @@ class AuthenticationMiddleware(BaseHTTPMiddleware):
             "/docs",
             "/redoc",
             "/openapi.json",
-            "/supported-languages"
+            "/supported-languages",
+            "/webhook",
+            "/pricing"
         }
     
     async def dispatch(self, request: Request, call_next) -> Response:

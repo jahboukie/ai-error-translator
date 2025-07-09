@@ -29,7 +29,7 @@ class ClaudeService:
         """Check if Claude service is available"""
         return self.client is not None
     
-    async def analyze_error(self, error_text: str, context: Dict[str, Any] = None) -> Dict[str, Any]:
+    def analyze_error(self, error_text: str, context: Dict[str, Any] = None) -> Dict[str, Any]:
         """Analyze error using Claude API"""
         if not self.client:
             raise Exception("Claude API client not initialized")
